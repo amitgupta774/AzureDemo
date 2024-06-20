@@ -3,3 +3,44 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+trigger:
+- none
+pool:
+  vmImage: 'windows-lastest'
+
+variables:
+  buildplatefrom: 'Any CPU'
+  buildconfiguration: 'Relase'
+  solution: '**/*Second_Demo.sln'
+  project: '**/*Second_Demo.csproj'
+
+steps:
+- task: NuGetToolInstaller@1
+  name: 'NugetToolInstaller'
+  displayName: 'NugGet Tool Installer'
+
+- task: NuGetCommand@2
+  name: 'Nugetrestore'
+  displayName: 'NugGet restore Package'
+  inputs:
+    command: 'restore'
+    restoreSolution: '$(solution)'
+    feedsToUse: 'select'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '$(project)'
+    arguments: '--configuration $(BuildConfiguration)'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '$(project)'
+    arguments: '--configuration: $(BuildConfiguration) --output:$(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: false
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'Azure_text_Project'
+    publishLocation: 'Container'
