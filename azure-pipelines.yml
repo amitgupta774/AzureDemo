@@ -45,7 +45,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   name: 'PublishBuild'
-  displayName: 'Run the Publish'
+  displayName: 'Run the Build Artifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'Azure_text_Project'
