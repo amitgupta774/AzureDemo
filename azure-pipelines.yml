@@ -6,7 +6,7 @@
 trigger:
 - none
 pool:
-  vmImage: 'windows-lastest'
+  vmImage: 'windows-latest'
 
 variables:
   buildplatefrom: 'Any CPU'
